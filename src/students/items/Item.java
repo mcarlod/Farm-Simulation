@@ -1,13 +1,13 @@
 package students.items;
 
-public class Item {
+public abstract class Item {
 
 	int age;
 	int maturationAge;
 	int deathAge;
-	double monetaryValue;
+	int monetaryValue;
 	
-	public Item(int maturationAge, int deathAge, double monetaryValue) {
+	public Item(int maturationAge, int deathAge, int monetaryValue) {
 		this.age = 0;
 		this.maturationAge = maturationAge;
 		this.deathAge = deathAge;
@@ -30,15 +30,13 @@ public class Item {
 		}
 	}
 	
-	public String getValue() {
-		
+	public int getValue() {
+		return (age >= maturationAge) ? monetaryValue : 0;
 	}
 	
 	public boolean equals(Item otherItem) {
 		return this.age == otherItem.age && this.maturationAge == otherItem.maturationAge && this.deathAge == otherItem.deathAge && this.monetaryValue == otherItem.monetaryValue;
 	}
 	
-	public String toString() {
-		
-	}
+	public abstract String toString();
 }
