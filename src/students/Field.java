@@ -85,11 +85,42 @@ public class Field {
 		}
 	}
 	
-	public void getValue() {
-		
+	public int getValue() {
+		int totalValue = 0;
+		for (int r = 0; r < height; r++) {
+			for (int c = 0; c < width; c++) {
+				totalValue += field[r][c].getValue();
+			}
+		}
+		return totalValue;
 	}
 	
-	public void getSummary() {
+	public String getSummary() {
+		int totalSoil = 0;
+		int totalUntilledSoil = 0;
+		int totalWeed = 0;
 		
+		for (int r = 0; r < height; r++) {
+			for (int c = 0; c < width; c++) {
+				if (field[r][c] instanceof Soil) {
+					totalSoil++;
+				} else if (field[r][c] instanceof UntilledSoil) {
+					totalUntilledSoil++;
+				} else if (field[r][c] instanceof Weed) {
+					totalWeed++;
+				}
+			}
+		}
+	
+		StringBuilder summary = new StringBuilder();
+		summary.append("Apples:").append(applesCreated).append("\n");
+		summary.append("Grain:").append(grainsCreated).append("\n");
+		summary.append("Soil:").append(totalSoil).append("\n");
+		summary.append("Untilled Soil:").append(totalUntilledSoil).append("\n");
+		summary.append("Weed:").append(totalWeed).append("\n");
+		summary.append("For a total of $:").append(getValue()).append("\n");
+		summary.append("Total Apples Created:").append(applesCreated).append("\n");
+		summary.append("Total Grain Created:").append(grainsCreated).append("\n");
+		return summary.toString();
 	}
 }
