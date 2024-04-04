@@ -27,6 +27,7 @@ public class Farm {
 			System.out.println("  t x y: till");
 			System.out.println("  h x y: harvest");
 			System.out.println("  p x y: plant");
+			System.out.println("  c: lure rabbit with carrots");
 			System.out.println("  s: field summary");
 			System.out.println("  w: wait");
 			System.out.println("  q: quit");
@@ -87,6 +88,10 @@ public class Farm {
 								System.out.println("Invalid input.");
 						}
 						break;
+					case "c":
+						field.lureRabbit(bankBalance);
+						bankBalance -= 2;
+						break;	
 					case "s":
 						System.out.println(field.getSummary());
 						break;
@@ -107,6 +112,8 @@ public class Farm {
 			}
 		}
 	}
+	
+	
 	
 	public static void main(String[] args) {
 		Farm farm = new Farm(5,10,10);

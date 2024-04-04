@@ -17,6 +17,10 @@ public class Field {
 	private int applesCreated;
 	private int grainsCreated;
 	
+	private Rabbit rabbit;
+	private final int carrotCost = 2;
+	
+	
 	public Field(int height, int width){
 		this.height = height;
 		this.width = width;
@@ -26,6 +30,7 @@ public class Field {
 				field[r][c] = new Soil();
 			}
 		}
+		this.rabbit = new Rabbit();
 	}
 	
 	public void tick() {
@@ -40,6 +45,9 @@ public class Field {
 					field[r][c] = new UntilledSoil();
 				}
 			}
+		}
+		if (rabbit.spawn()) {
+			rabbit.hop(this);
 		}
 	}
 	
@@ -93,6 +101,28 @@ public class Field {
 			}
 		}
 		return totalValue;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public void removeRabbit() {
+		rabbit = new Rabbit();
+	}
+	
+	public void lureRabbit(int bankBalance) {
+		if (bankBalance >= carrotCost) {
+			removeRabbit();
+			bankBalance -= carrotCost;
+			System.out.println("You successfully lured rabbit away with carrots.");
+		} else {
+			System.out.println("Insufficient funds.");
+		}
 	}
 	
 	public String getSummary() {
