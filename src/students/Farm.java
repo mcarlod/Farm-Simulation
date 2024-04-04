@@ -12,15 +12,18 @@ public class Farm {
 	public Field field;
 	public Scanner scanner;
 	private int bankBalance;
-	
+
+	// Constructor to initialize farm
 	public Farm(int fieldWidth, int fieldHeight, int startingFunds){
 		scanner = new Scanner(System.in);
 		field = new Field(fieldWidth, fieldHeight);
 		bankBalance = startingFunds;
 	}
 	
+	// Method to run the simulation
 	public void run() {
 		while (true) {
+			// Display current state of field and controls
 			System.out.println(field);
 			System.out.println("Bank balance: $" + bankBalance);
 			System.out.println("Enter your next action:");
@@ -32,6 +35,7 @@ public class Farm {
 			System.out.println("  w: wait");
 			System.out.println("  q: quit");
 			
+			// Gets user input
 			String[] input = scanner.nextLine().split(" ");
 			if (input.length == 0) {
 				System.out.println("Invalid input.");
@@ -43,11 +47,13 @@ public class Farm {
 				int x, y;
 				switch (action) {
 					case "t":
+						// tills soil at x y
 						x = Integer.parseInt(input[1]) - 1;
 						y = Integer.parseInt(input[2]) - 1;
 						field.till(x,y);
 						break;
 					case "h":
+						// harvests item at x y
 						x = Integer.parseInt(input[1]) - 1;
 						y = Integer.parseInt(input[2]) - 1;
 						Item item = field.get(x, y);
@@ -60,6 +66,7 @@ public class Farm {
 						}
 						break;
 					case "p":
+						// plant item at x y
 						x = Integer.parseInt(input[1]) - 1;
 						y = Integer.parseInt(input[2]) - 1;
 						System.out.println("Enter:");
@@ -69,6 +76,7 @@ public class Farm {
 						String plantType = scanner.nextLine();
 						switch (plantType) {
 							case "a":
+								// plants apple
 								if (bankBalance >= 2) {
 									bankBalance -= 2;
 									field.plant(x,y, new Apples());
@@ -77,6 +85,7 @@ public class Farm {
 								}
 								break;
 							case "g":
+								// plants grain
 								if (bankBalance >= 1) {
 									bankBalance -= 1;
 									field.plant(x, y,  new Grain());
@@ -89,22 +98,27 @@ public class Farm {
 						}
 						break;
 					case "c":
+						// lure rabbit with carrots bought
 						field.lureRabbit(bankBalance);
 						bankBalance -= 2;
 						break;	
 					case "s":
+						// displays summary of field
 						System.out.println(field.getSummary());
 						break;
 					case "w":
+						// wait and let field tick
 						field.tick();
 						break;
 					case "q":
+						// quit game
 						System.out.println("Ending game.");
 						return;
 					default:
 						System.out.println("Invalid input.");
 				}
 				
+				// tick field after each action
 				field.tick();
 				
 			} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
@@ -113,8 +127,7 @@ public class Farm {
 		}
 	}
 	
-	
-	
+	// Main method to start program
 	public static void main(String[] args) {
 		Farm farm = new Farm(5,10,10);
 		farm.run();

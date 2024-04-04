@@ -18,9 +18,9 @@ public class Field {
 	private int grainsCreated;
 	
 	private Rabbit rabbit;
-	private final int carrotCost = 2;
+	private boolean rabbitSpawned;
 	
-	
+	// Initialize the field with given dimensions and fill it with soil
 	public Field(int height, int width){
 		this.height = height;
 		this.width = width;
@@ -30,27 +30,37 @@ public class Field {
 				field[r][c] = new Soil();
 			}
 		}
+		// Initialize rabbit and set rabbitSpawned to false
 		this.rabbit = new Rabbit();
+		this.rabbitSpawned = false;
 	}
 	
+	// Advances the simulation once per tick
 	public void tick() {
 		Random random = new Random();
 		for (int r=0; r < height; r++) {
 			for (int c=0; c < width; c++) {
+				// Updates state of each item in the field
 				field[r][c].tick();
 				if (field[r][c] instanceof Soil && random.nextDouble() < 0.2) {
 					field[r][c] = new Weed();
 				}
+				// Replace dead plants with UntilledSoil
 				if (field[r][c].died()) {
 					field[r][c] = new UntilledSoil();
 				}
 			}
 		}
-		if (rabbit.spawn()) {
+		// Makes sure that no rabbit exists when a new one spawns and makes it hop
+		if (rabbit.spawn() && !rabbitSpawned) {
+			rabbit.hop(this);
+			rabbitSpawned = true;
+		} else if (rabbit.canHop()) {
 			rabbit.hop(this);
 		}
 	}
 	
+	// Method to convert field into a string representation
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -69,12 +79,15 @@ public class Field {
 		return sb.toString();
 	}
 	
+	// Method to till Soil at a given position
 	public void till(int x, int y) {
+		// Checks if within field boundaries
 		if (x >= 0 && x < height && y >= 0 && y < width) {
 			field[x][y] = new Soil();
 		}
 	}
 	
+	// Method to retrieve item at a given position
 	public Item get(int x, int y) {
 		if (x >= 0 && x < height && y >= 0 && y < width) {
 			return field[x][y];
@@ -82,9 +95,11 @@ public class Field {
 		return null;
 	}
 	
+	// Method to plant an item at a given position
 	public void plant(int x, int y, Item item) {
 		if (x >= 0 && x < height && y >= 0 && y < width) {
 			field[x][y] = item;
+			// Increment counters for apples and grains created
 			if (item instanceof Apples) {
 				applesCreated++;
 			} else if (item instanceof Grain) {
@@ -93,6 +108,7 @@ public class Field {
 		}
 	}
 	
+	// Calculates total value of all items in field
 	public int getValue() {
 		int totalValue = 0;
 		for (int r = 0; r < height; r++) {
@@ -111,20 +127,31 @@ public class Field {
 		return width;
 	}
 	
+	// Removes rabbit from the field and sets rabbitSpawned to false
 	public void removeRabbit() {
-		rabbit = new Rabbit();
+		for (int r = 0; r < height; r++) {
+			for (int c = 0; c < width; c++) {
+				if (rabbit.getX() == r && rabbit.getY() == c) {
+					field[r][c] = new Soil();
+					rabbitSpawned = false;
+					return;
+				}
+			}
+		}
 	}
 	
+	// Lures rabbit away with carrots
 	public void lureRabbit(int bankBalance) {
-		if (bankBalance >= carrotCost) {
+		if (bankBalance >= 2) {
 			removeRabbit();
-			bankBalance -= carrotCost;
+			bankBalance -= 2;
 			System.out.println("You successfully lured rabbit away with carrots.");
 		} else {
 			System.out.println("Insufficient funds.");
 		}
 	}
 	
+	// Generates summary of field contents
 	public String getSummary() {
 		int totalSoil = 0;
 		int totalUntilledSoil = 0;
