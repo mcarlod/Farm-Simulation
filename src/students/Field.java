@@ -113,14 +113,14 @@ public class Field {
 		}
 	
 		StringBuilder summary = new StringBuilder();
-		summary.append("Apples:").append(applesCreated).append("\n");
-		summary.append("Grain:").append(grainsCreated).append("\n");
-		summary.append("Soil:").append(totalSoil).append("\n");
-		summary.append("Untilled Soil:").append(totalUntilledSoil).append("\n");
-		summary.append("Weed:").append(totalWeed).append("\n");
-		summary.append("For a total of $:").append(getValue()).append("\n");
-		summary.append("Total Apples Created:").append(applesCreated).append("\n");
-		summary.append("Total Grain Created:").append(grainsCreated).append("\n");
+		summary.append("Apples:        ").append(applesCreated).append("\n");
+		summary.append("Grain:         ").append(grainsCreated).append("\n");
+		summary.append("Soil:          ").append(totalSoil).append("\n");
+		summary.append("Untilled Soil: ").append(totalUntilledSoil).append("\n");
+		summary.append("Weed:          ").append(totalWeed).append("\n");
+		summary.append("For a total of $").append(getValue()).append("\n");
+		summary.append("Total Apples Created: ").append(applesCreated).append("\n");
+		summary.append("Total Grain Created: ").append(grainsCreated).append("\n");
 		return summary.toString();
 	}
 }

@@ -74,6 +74,7 @@ public class Farm {
 								} else {
 									System.out.println("Insufficient funds.");
 								}
+								break;
 							case "g":
 								if (bankBalance >= 1) {
 									bankBalance -= 1;
@@ -98,6 +99,9 @@ public class Farm {
 					default:
 						System.out.println("Invalid input.");
 				}
+				
+				field.tick();
+				
 			} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
 				System.out.println("Invalid input.");
 			}
@@ -105,7 +109,7 @@ public class Farm {
 	}
 	
 	public static void main(String[] args) {
-		Farm farm = new Farm(10,5,10);
+		Farm farm = new Farm(5,10,10);
 		farm.run();
 	}
 }
