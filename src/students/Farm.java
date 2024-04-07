@@ -22,6 +22,7 @@ public class Farm {
 	
 	// Method to run the simulation
 	public void run() {
+		int hopsRemaining = Rabbit.maxHops; // Maximum number of hops allowed
 		while (true) {
 			// Display current state of field and controls
 			System.out.println(field);
@@ -35,13 +36,24 @@ public class Farm {
 			System.out.println("  w: wait");
 			System.out.println("  q: quit");
 			
+			// Decrement hops remaining after each turn
+            hopsRemaining--;
+			
+            // Check if the rabbit has used all its hops
+            if (hopsRemaining <= 0) {
+                // Remove the rabbit from the field
+                field.removeRabbit();
+                // Reset hops remaining for the next rabbit
+                hopsRemaining = Rabbit.maxHops;
+            }
+			
 			// Gets user input
 			String[] input = scanner.nextLine().split(" ");
 			if (input.length == 0) {
 				System.out.println("Invalid input.");
 				continue;
 			}
-			
+            
 			String action = input[0];
 			try {
 				int x, y;
@@ -99,8 +111,12 @@ public class Farm {
 						break;
 					case "c":
 						// lure rabbit with carrots bought
-						field.lureRabbit(bankBalance);
-						bankBalance -= 2;
+						if (field.rabbitSpawned == true) {
+							field.lureRabbit(bankBalance);
+							bankBalance -= 2;
+						} else {
+							System.out.println("There's no rabbits!");
+						}
 						break;	
 					case "s":
 						// displays summary of field
