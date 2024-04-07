@@ -95,6 +95,7 @@ public class Farm {
 								} else {
 									System.out.println("Insufficient funds.");
 								}
+								field.tick();
 								break;
 							case "g":
 								// plants grain
@@ -104,6 +105,7 @@ public class Farm {
 								} else {
 									System.out.println("Insufficient funds.");
 								}
+								field.tick();
 								break;
 							default:
 								System.out.println("Invalid input.");
@@ -133,10 +135,6 @@ public class Farm {
 					default:
 						System.out.println("Invalid input.");
 				}
-				
-				// tick field after each action
-				field.tick();
-				
 			} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
 				System.out.println("Invalid input.");
 			}
